@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" text="%label.enterLink.text" textAlignment="CENTER">
          <VBox.margin>
@@ -16,37 +22,53 @@
          </font>
       </Label>
       <TextField fx:id="enterLinkTextField" />
-      <Label maxWidth="1.7976931348623157E308" text="%label.example1.text">
-         <VBox.margin>
-            <Insets left="5.0" />
-         </VBox.margin>
-         <padding>
-            <Insets top="5.0" />
-         </padding></Label>
-      <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="%label.example2.text">
-         <VBox.margin>
-            <Insets left="5.0" />
-         </VBox.margin></Label>
+      <Button fx:id="startButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStartButtonAction" text="%button.start.title" />
       <ProgressIndicator fx:id="spinner">
          <VBox.margin>
             <Insets bottom="15.0" top="15.0" />
          </VBox.margin>
       </ProgressIndicator>
-      <Button fx:id="startButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStartButtonAction" text="%button.start.title" />
-      <Label fx:id="messageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="126" layoutY="120" minHeight="16" minWidth="69" textAlignment="CENTER">
+      <Label fx:id="messageLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="126" layoutY="120" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="nazwa" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
          <VBox.margin>
-            <Insets bottom="15.0" top="15.0" />
+            <Insets bottom="15.0" />
          </VBox.margin>
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
       </Label>
+      <TextArea fx:id="pathLabel" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" promptText="ścieżka" wrapText="true" VBox.vgrow="ALWAYS" />
+      <Label maxWidth="1.7976931348623157E308" text="Automatyczne przechodzenie do kolejnego pliku:">
+         <VBox.margin>
+            <Insets bottom="5.0" top="30.0" />
+         </VBox.margin>
+      </Label>
+      <Button fx:id="nextRowButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleNextRowButtonAction" text="%button.next.title" />
+      <Label maxWidth="1.7976931348623157E308" text="Ręczne przechodzenie do wskazanego pliku:">
+         <VBox.margin>
+            <Insets bottom="5.0" top="30.0" />
+         </VBox.margin>
+      </Label>
+      <HBox alignment="CENTER">
+         <children>
+            <Label text="%label.customRow.text">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Label>
+            <Spinner fx:id="customRowSpinner" editable="true">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Spinner>
+            <Button fx:id="customRowButton" mnemonicParsing="false" onAction="#handleCustomRowButtonAction" text="%button.custom.title" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
       <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="16" minWidth="69" text="by maciejprogramuje@gmail.com" textAlignment="RIGHT">
          <font>
             <Font size="10.0" />
          </font>
          <VBox.margin>
-            <Insets left="5.0" />
+            <Insets left="5.0" top="30.0" />
          </VBox.margin>
       </Label>
    </children>

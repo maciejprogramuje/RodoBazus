@@ -45,4 +45,7 @@ public class FolderReader {
         }
     }
 
+    public List<FileRow> getFileRows() {
+        return fileRows;
+    }
 }

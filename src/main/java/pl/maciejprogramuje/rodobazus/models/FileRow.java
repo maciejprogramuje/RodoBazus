@@ -1,7 +1,7 @@
 package pl.maciejprogramuje.rodobazus.models;
 
 public class FileRow {
-    long rowNumber;
+    int rowNumber;
     String rowName;
     String rowExtension;
     String rowPath;
@@ -12,11 +12,11 @@ public class FileRow {
         this.rowPath = rowPath;
     }
 
-    public long getRowNumber() {
+    public int getRowNumber() {
         return rowNumber;
     }
 
-    public void setRowNumber(long rowNumber) {
+    public void setRowNumber(int rowNumber) {
         this.rowNumber = rowNumber;
     }
 
