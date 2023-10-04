@@ -8,11 +8,12 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
-    public static final String fileName = "dir_listing_";
-    public static final String fileNameDenied = "dir_access_denied.txt";
+    public static final String[] EXCLUDED_EXTENSIONS = {"class"};
 
     public static ResourceBundle bundles;
 

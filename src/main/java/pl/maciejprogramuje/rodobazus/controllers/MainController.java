@@ -1,4 +1,4 @@
-package pl.maciejprogramuje.rodobazus.Controllers;
+package pl.maciejprogramuje.rodobazus.controllers;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

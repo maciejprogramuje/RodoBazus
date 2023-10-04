@@ -1,4 +1,4 @@
-package pl.maciejprogramuje.rodobazus.Controllers;
+package pl.maciejprogramuje.rodobazus.controllers;
 
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
