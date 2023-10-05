@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static pl.maciejprogramuje.rodobazus.Main.EXCLUDED_DIRECTORIES;
 import static pl.maciejprogramuje.rodobazus.Main.EXCLUDED_EXTENSIONS;
 
 public class FolderReader {
@@ -36,10 +37,16 @@ public class FolderReader {
 
                         MainControllerUtils.showOnMessageLabel(name, messageStringProperty);
 
-                        System.out.println(rowLastNumber + ": " + name + ", " + extension + ", " + patch);
+                        System.out.println("FILE: " + rowLastNumber + ": " + name + ", " + extension + ", " + patch);
                     }
                 } else if (f.isDirectory()) {
-                    readNamesOfFiles(f.getAbsolutePath(), messageStringProperty);
+                    for (String excludedDirectory : EXCLUDED_DIRECTORIES) {
+                        if (!f.getName().contains(excludedDirectory)) {
+                            readNamesOfFiles(f.getAbsolutePath(), messageStringProperty);
+
+                            System.out.println("FOLDER: " + f.getName() + ", " + f.getAbsolutePath());
+                        }
+                    }
                 }
             }
         }

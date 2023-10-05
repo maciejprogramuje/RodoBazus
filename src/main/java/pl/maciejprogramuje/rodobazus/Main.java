@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
-    public static final String[] EXCLUDED_EXTENSIONS = {"class", "jasper"};
+    public static final String[] EXCLUDED_EXTENSIONS = {"class", "jasper", "jar", "eot", "woff"};
+    public static final String[] EXCLUDED_DIRECTORIES = {".git"};
 
     public static ResourceBundle bundles;
 
