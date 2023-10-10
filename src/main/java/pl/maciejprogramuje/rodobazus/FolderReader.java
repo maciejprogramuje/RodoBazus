@@ -31,20 +31,18 @@ public class FolderReader {
                     String patch = f.getAbsolutePath();
 
                     if (Arrays.stream(EXCLUDED_EXTENSIONS).noneMatch(Predicate.isEqual(extension))) {
-                        fileRows.add(new FileRow(name, extension, patch));
-                        int rowLastNumber = fileRows.size() - 1;
-                        fileRows.get(rowLastNumber).setRowNumber(rowLastNumber);
+                        addFileToRows(messageStringProperty, name, extension, patch);
+                    }
 
-                        MainControllerUtils.showOnMessageLabel(name, messageStringProperty);
-
-                        System.out.println("FILE: " + rowLastNumber + ": " + name + ", " + extension + ", " + patch);
+                    if (name.contains("bazus") && extension.equals("jar")) {
+                        addFileToRows(messageStringProperty, name, extension, patch);
                     }
                 } else if (f.isDirectory()) {
                     for (String excludedDirectory : EXCLUDED_DIRECTORIES) {
                         if (!f.getName().contains(excludedDirectory)) {
                             readNamesOfFiles(f.getAbsolutePath(), messageStringProperty);
 
-                            System.out.println("FOLDER: " + f.getName() + ", " + f.getAbsolutePath());
+                            //System.out.println("FOLDER: " + f.getName() + ", " + f.getAbsolutePath());
                         }
                     }
                 }
@@ -52,7 +50,18 @@ public class FolderReader {
         }
     }
 
+    private void addFileToRows(StringProperty messageStringProperty, String name, String extension, String patch) {
+        fileRows.add(new FileRow(name, extension, patch));
+        int rowLastNumber = fileRows.size() - 1;
+        fileRows.get(rowLastNumber).setRowNumber(rowLastNumber);
+
+        MainControllerUtils.showOnMessageLabel(name, messageStringProperty);
+
+        System.out.println("FILE: " + rowLastNumber + ": " + name + ", " + extension + ", " + patch);
+    }
+
     public List<FileRow> getFileRows() {
         return fileRows;
     }
+
 }

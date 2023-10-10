@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
 import pl.maciejprogramuje.rodobazus.FolderReader;
 import pl.maciejprogramuje.rodobazus.Main;
 import pl.maciejprogramuje.rodobazus.models.FileRow;
@@ -33,7 +34,6 @@ public class MainControllerActions {
             mainController.startButtonDisableProperty.setValue(true);
             mainController.messageStringProperty.setValue("");
             mainController.pathStringProperty.setValue("");
-            mainController.nextRowStringProperty.setValue("Rozpocznij analize plikow!");
 
             final String finalCombinedFileName = path.substring(path.lastIndexOf("\\") + 1);
             mainController.messageStringProperty.setValue(Main.bundles.getString("label.message.processing.text") + " " + finalCombinedFileName + "...");
@@ -60,6 +60,13 @@ public class MainControllerActions {
                             Main.bundles.getString("label.message.done.text"),
                             mainController.messageStringProperty,
                             folderReader.getFileRows().size());
+
+                    MainControllerUtils.showOnMessageLabelPattern(
+                            Main.bundles.getString("button.next.title"),
+                            mainController.nextRowStringProperty,
+                            rowToAnaliseIndex,
+                            folderReader.getFileRows().get(rowToAnaliseIndex).getRowName()
+                    );
                 }
             });
 
@@ -73,11 +80,9 @@ public class MainControllerActions {
         if (size > 0 && rowToAnaliseIndex < size) {
             FileRow fileRow = folderReader.getFileRows().get(rowToAnaliseIndex);
 
-            String openFileMessage = openFile(fileRow);
-
-            setSpinnerProperties(rowToAnaliseIndex);
-
             rowToAnaliseIndex++;
+
+            openFile(fileRow);
         }
     }
 
@@ -86,16 +91,24 @@ public class MainControllerActions {
 
         mainController.pathStringProperty.setValue(fr.getRowPath());
 
-        MainControllerUtils.showOnMessageLabelPattern(
-                Main.bundles.getString("button.next.title"),
-                mainController.nextRowStringProperty,
-                fr.getRowNumber(),
-                fr.getRowName()
-        );
-
         try {
             if (file.exists()) {
-                Desktop.getDesktop().open(file);
+                if (fr.getRowName().contains("bazus") && fr.getRowExtension().equals("jar")) {
+                    Runtime runtime = Runtime.getRuntime();
+                    Process process = runtime.exec("\"C:\\java_decompiler\\jd-gui.exe\" \"" + file.getAbsolutePath() + "\"");
+                } else {
+                    Desktop.getDesktop().open(file);
+                }
+
+                setSpinnerProperties(rowToAnaliseIndex);
+
+                MainControllerUtils.showOnMessageLabelPattern(
+                        Main.bundles.getString("button.next.title"),
+                        mainController.nextRowStringProperty,
+                        rowToAnaliseIndex,
+                        folderReader.getFileRows().get(rowToAnaliseIndex).getRowName()
+                );
+
                 return fr.getRowName();
             } else {
                 return Main.bundles.getString("file.not.exist");
@@ -107,7 +120,7 @@ public class MainControllerActions {
     }
 
     public void handleCustomRowButton() {
-        Integer customRowNumber = mainController.customRowSpinner.getValue();
+        int customRowNumber = Integer.parseInt(mainController.customRowSpinner.editorProperty().getValue().textProperty().getValue());
 
         rowToAnaliseIndex = customRowNumber + 1;
 

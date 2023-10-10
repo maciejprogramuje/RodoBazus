@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
+<VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" text="%label.enterLink.text" textAlignment="CENTER">
          <VBox.margin>
@@ -31,6 +31,11 @@
       <Label fx:id="messageLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="126" layoutY="120" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="nazwa" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="15.0" />
+         </VBox.margin>
+      </Label>
+      <Label fx:id="messageLabel1" alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="Aktualnie analizowany plik:" textAlignment="CENTER" wrapText="true">
+         <VBox.margin>
+            <Insets bottom="5.0" />
          </VBox.margin>
       </Label>
       <TextArea fx:id="pathLabel" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" promptText="ścieżka" wrapText="true" VBox.vgrow="ALWAYS" />
@@ -63,12 +68,20 @@
             <Insets />
          </VBox.margin>
       </HBox>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="UWAGA! Pamietaj o pliku C:\java_decompiler\jd-gui.exe" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="15.0" />
+         </VBox.margin>
+      </Label>
       <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="16" minWidth="69" text="by maciejprogramuje@gmail.com" textAlignment="RIGHT">
          <font>
             <Font size="10.0" />
          </font>
          <VBox.margin>
-            <Insets left="5.0" top="30.0" />
+            <Insets left="5.0" top="15.0" />
          </VBox.margin>
       </Label>
    </children>
