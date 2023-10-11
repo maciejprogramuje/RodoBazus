@@ -4,19 +4,24 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import pl.maciejprogramuje.rodobazus.JarComparator;
 import pl.maciejprogramuje.rodobazus.FolderReader;
 import pl.maciejprogramuje.rodobazus.Main;
 import pl.maciejprogramuje.rodobazus.models.FileRow;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MainControllerActions {
     private MainController mainController;
     private FolderReader folderReader;
     private int rowToAnaliseIndex;
+    private ArrayList<String> lines;
+    private JarComparator jarComparator;
 
     public MainControllerActions(MainController mainController) {
         this.mainController = mainController;
@@ -25,24 +30,24 @@ public class MainControllerActions {
     public void handleStartButton() {
         rowToAnaliseIndex = 0;
 
-        mainController.messageStringProperty.setValue("");
-        final String path = mainController.enterLinkStringProperty.getValue();
+        mainController.setMessageStringProperty("");
+        final String path = mainController.getEnterLinkStringProperty();
         if (path.isEmpty()) {
-            mainController.messageStringProperty.setValue(Main.bundles.getString("label.message.noLink.text"));
+            mainController.setMessageStringProperty(Main.bundles.getString("label.message.noLink.text"));
         } else {
-            mainController.spinnerVisibleProperty.setValue(true);
-            mainController.startButtonDisableProperty.setValue(true);
-            mainController.messageStringProperty.setValue("");
-            mainController.pathStringProperty.setValue("");
+            mainController.setSpinnerVisibleProperty(true);
+            mainController.setStartButtonDisableProperty(true);
+            mainController.setMessageStringProperty("");
+            mainController.setPathStringProperty("");
 
             final String finalCombinedFileName = path.substring(path.lastIndexOf("\\") + 1);
-            mainController.messageStringProperty.setValue(Main.bundles.getString("label.message.processing.text") + " " + finalCombinedFileName + "...");
+            mainController.setMessageStringProperty(Main.bundles.getString("label.message.processing.text") + " " + finalCombinedFileName + "...");
 
             final Task<Void> task = new Task<Void>() {
                 @Override
                 protected Void call() {
                     folderReader = new FolderReader();
-                    folderReader.readNamesOfFiles(path, mainController.messageStringProperty);
+                    folderReader.readNamesOfFiles(path, mainController.messageStringPropertyProperty());
 
                     return null;
                 }
@@ -50,20 +55,20 @@ public class MainControllerActions {
 
             task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                 public void handle(WorkerStateEvent event) {
-                    mainController.spinnerVisibleProperty.setValue(false);
-                    mainController.startButtonDisableProperty.setValue(false);
-                    mainController.customRowBooleanProperty.setValue(false);
+                    mainController.setSpinnerVisibleProperty(false);
+                    mainController.setStartButtonDisableProperty(false);
+                    mainController.setCustomRowBooleanProperty(false);
 
                     setSpinnerProperties(rowToAnaliseIndex);
 
                     MainControllerUtils.showOnMessageLabelPattern(
                             Main.bundles.getString("label.message.done.text"),
-                            mainController.messageStringProperty,
+                            mainController.messageStringPropertyProperty(),
                             folderReader.getFileRows().size());
 
                     MainControllerUtils.showOnMessageLabelPattern(
                             Main.bundles.getString("button.next.title"),
-                            mainController.nextRowStringProperty,
+                            mainController.nextRowStringPropertyProperty(),
                             rowToAnaliseIndex,
                             folderReader.getFileRows().get(rowToAnaliseIndex).getRowName()
                     );
@@ -89,7 +94,7 @@ public class MainControllerActions {
     public String openFile(FileRow fr) {
         File file = new File(fr.getRowPath());
 
-        mainController.pathStringProperty.setValue(fr.getRowPath());
+        mainController.setPathStringProperty(fr.getRowPath());
 
         try {
             if (file.exists()) {
@@ -104,7 +109,7 @@ public class MainControllerActions {
 
                 MainControllerUtils.showOnMessageLabelPattern(
                         Main.bundles.getString("button.next.title"),
-                        mainController.nextRowStringProperty,
+                        mainController.nextRowStringPropertyProperty(),
                         rowToAnaliseIndex,
                         folderReader.getFileRows().get(rowToAnaliseIndex).getRowName()
                 );
@@ -134,5 +139,79 @@ public class MainControllerActions {
                         0,
                         folderReader.getFileRows().size(),
                         initialValue));
+    }
+
+    public void handleGetFileListFromGit() {
+        final String folder = mainController.getEnterLinkStringProperty();
+        String gitCommitId = mainController.getEnterGitCommitIdTextFieldStringProperty();
+        String gitBranch = mainController.getEnterGitBranchTextFieldStringProperty();
+
+        System.out.println("folder=" + folder + ", gitCommitId=" + gitCommitId + ", gitBranch=" + gitBranch);
+
+        String command = "git checkout";
+        doGitCommand(command, folder, gitBranch, false);
+
+        command = "git diff " + gitCommitId + " HEAD --name-only";
+        doGitCommand(command, folder, "", true);
+    }
+
+    private void doGitCommand(String command, String folder, String branchName, boolean isFileListGenerated) {
+        ArrayList<String> lines = new ArrayList<>();
+
+        try {
+            String[] commands = {
+                    "cmd",
+                    "/c",
+                    command + " " + branchName
+            };
+
+            Process process = Runtime.getRuntime().exec(commands, null, new File(folder));
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 8 * 1024);
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                if (!line.isEmpty()) {
+                    System.out.println("GIT -->>" + line);
+
+                    if (isFileListGenerated) {
+                        lines.add(line.trim());
+                    }
+                }
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleBazusStartButton() {
+        final Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws IOException {
+                mainController.setSpinnerVisibleProperty(true);
+                mainController.setStartBazusButtonDisableProperty(true);
+
+                jarComparator = new JarComparator(mainController.getEnterBazusATextFieldProperty(), mainController.getEnterBazusBTextFieldProperty());
+                jarComparator.downloadRepos(mainController.pathStringPropertyProperty());
+
+                //to przeszkadza w usuwaniu
+                jarComparator.extractRepos(mainController.pathStringPropertyProperty());
+
+                jarComparator.deleteExcludedFileTypes(mainController.pathStringPropertyProperty());
+
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            public void handle(WorkerStateEvent event) {
+                mainController.setSpinnerVisibleProperty(false);
+                mainController.setStartBazusButtonDisableProperty(false);
+            }
+        });
+
+        Thread thread = new Thread(task);
+        thread.start();
     }
 }

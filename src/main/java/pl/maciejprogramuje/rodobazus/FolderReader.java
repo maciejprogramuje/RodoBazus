@@ -37,6 +37,15 @@ public class FolderReader {
                     if (name.contains("bazus") && extension.equals("jar")) {
                         addFileToRows(messageStringProperty, name, extension, patch);
                     }
+
+                    /*if (extension.equals("xls")
+                            || extension.equals("xlsx")
+                            || extension.equals("doc")
+                            || extension.equals("docx")
+                            || extension.equals("pdf")) {
+                        addFileToRows(messageStringProperty, name, extension, patch);
+                    }*/
+
                 } else if (f.isDirectory()) {
                     for (String excludedDirectory : EXCLUDED_DIRECTORIES) {
                         if (!f.getName().contains(excludedDirectory)) {

@@ -9,25 +9,124 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
+<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="%label.enterLink.text" textAlignment="CENTER">
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Bazus - sciezka pliku A do analizy:" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="34.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="enterBazusATextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Bazus - sciezka pliku B do analizy:" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="34.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="enterBazusBTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+         </children>
          <VBox.margin>
-            <Insets bottom="5.0" top="20.0" />
+            <Insets top="5.0" />
          </VBox.margin>
+      </HBox>
+      <Button fx:id="startBazusButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBazusStartButtonAction" text="Bazus - wypakuj pliki instalacyjne do porownania">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Button>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Pliki sa wypakowywane do C:\BazusTemp" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
-      </Label>
-      <TextField fx:id="enterLinkTextField" />
-      <Button fx:id="startButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStartButtonAction" text="%button.start.title" />
-      <ProgressIndicator fx:id="spinner">
          <VBox.margin>
-            <Insets bottom="15.0" top="15.0" />
+            <Insets top="5.0" />
          </VBox.margin>
-      </ProgressIndicator>
+      </Label>
+      <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-378.27471923828125" startY="9.292893409729004">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Line>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Foder do analizy:" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="34.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="enterLinkTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <Button fx:id="startButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStartButtonAction" text="%button.start.title">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin></Button>
+      <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-378.27471923828125" startY="9.292893409729004">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Line>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label text="GIT Branch  do analizy">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin></Label>
+            <TextField fx:id="enterGitBranchTextField" HBox.hgrow="ALWAYS" />
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox>
+         <children>
+            <Label text="GIT commit ID:">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="45.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="enterGitCommitIdTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </TextField>
+            <Button fx:id="getFileListFromGit" mnemonicParsing="false" onAction="#handleGetFileListFromGitAction" text="Generuj liste plikow z GIT" />
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-378.27471923828125" startY="9.292893409729004">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Line>
       <Label fx:id="messageLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="126" layoutY="120" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="nazwa" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="15.0" />
@@ -76,6 +175,11 @@
             <Insets top="15.0" />
          </VBox.margin>
       </Label>
+      <ProgressIndicator fx:id="spinner" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0">
+         <VBox.margin>
+            <Insets bottom="15.0" top="15.0" />
+         </VBox.margin>
+      </ProgressIndicator>
       <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="16" minWidth="69" text="by maciejprogramuje@gmail.com" textAlignment="RIGHT">
          <font>
             <Font size="10.0" />
