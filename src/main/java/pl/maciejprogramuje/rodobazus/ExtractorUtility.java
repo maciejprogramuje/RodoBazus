@@ -1,19 +1,17 @@
 package pl.maciejprogramuje.rodobazus;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import java.util.concurrent.TimeUnit;
 
 public class ExtractorUtility {
-    public static void extractFile(String fileURL, String saveDir) throws IOException {
-        String[] commands = {
-                "cmd",
-                "/c",
-                "7z x " + fileURL + " -o" + saveDir
-        };
-
-        Process process = Runtime.getRuntime().exec(commands);
-        process.destroy();
+    public static void extractFile(String fileURL, String saveDir) {
+        try {
+            System.out.println("Rozpakowywanie: " + fileURL);
+            ZipFile zipFile = new ZipFile(fileURL);
+            zipFile.extractAll(saveDir);
+        } catch (ZipException e) {
+            e.printStackTrace();
+        }
     }
 }

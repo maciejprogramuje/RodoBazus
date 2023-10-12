@@ -47,14 +47,15 @@ public class MainController implements Initializable {
     public Button startBazusButton;
 
     @FXML
+    public Button deleteBazusButton;
+
+    @FXML
     private Button startButton;
 
     @FXML
     private Label messageLabel;
 
-    private BooleanProperty spinnerVisibleProperty;
     private StringProperty enterLinkStringProperty;
-    private BooleanProperty startButtonDisableProperty;
     private StringProperty messageStringProperty;
     private StringProperty nextRowStringProperty;
     private BooleanProperty customRowBooleanProperty;
@@ -63,7 +64,8 @@ public class MainController implements Initializable {
     private StringProperty enterGitBranchTextFieldStringProperty;
     private StringProperty enterBazusATextFieldProperty;
     private StringProperty enterBazusBTextFieldProperty;
-    private BooleanProperty startBazusButtonDisableProperty;
+
+    private BooleanProperty disableButtonsProperty;
 
     MainControllerActions mainControllerActions;
 
@@ -71,14 +73,15 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         mainControllerActions = new MainControllerActions(this);
 
-        spinnerVisibleProperty = new SimpleBooleanProperty(false);
-        spinner.visibleProperty().bind(spinnerVisibleProperty);
+        disableButtonsProperty = new SimpleBooleanProperty(false);
+        spinner.visibleProperty().bind(disableButtonsProperty);
+        startButton.disableProperty().bind(disableButtonsProperty);
+        startBazusButton.disableProperty().bind(disableButtonsProperty);
+        deleteBazusButton.disableProperty().bind(disableButtonsProperty);
+
 
         enterLinkStringProperty = new SimpleStringProperty("C:\\Tomcat\\webBazusWU\\tomcat\\webapps\\wu");
         enterLinkTextField.textProperty().bindBidirectional(enterLinkStringProperty);
-
-        startButtonDisableProperty = new SimpleBooleanProperty();
-        startButton.disableProperty().bind(startButtonDisableProperty);
 
         messageStringProperty = new SimpleStringProperty("");
         messageLabel.textProperty().bind(messageStringProperty);
@@ -105,9 +108,6 @@ public class MainController implements Initializable {
 
         enterBazusBTextFieldProperty = new SimpleStringProperty("C:\\BazusTemp\\bazus B.jnlp");
         enterBazusBTextField.textProperty().bindBidirectional(enterBazusBTextFieldProperty);
-
-        startBazusButtonDisableProperty = new SimpleBooleanProperty();
-        startBazusButton.disableProperty().bind(startBazusButtonDisableProperty);
     }
 
     public void handleStartButtonAction() {
@@ -128,21 +128,12 @@ public class MainController implements Initializable {
         mainControllerActions.handleBazusStartButton();
     }
 
+    public void handleDeleteBazusButtonAction() {
+        mainControllerActions.handleDeleteBazusButton();
+    }
+
 
     //--------------------------------------------
-
-
-    public boolean isSpinnerVisibleProperty() {
-        return spinnerVisibleProperty.get();
-    }
-
-    public BooleanProperty spinnerVisiblePropertyProperty() {
-        return spinnerVisibleProperty;
-    }
-
-    public void setSpinnerVisibleProperty(boolean spinnerVisibleProperty) {
-        this.spinnerVisibleProperty.set(spinnerVisibleProperty);
-    }
 
     public String getEnterLinkStringProperty() {
         return enterLinkStringProperty.get();
@@ -154,18 +145,6 @@ public class MainController implements Initializable {
 
     public void setEnterLinkStringProperty(String enterLinkStringProperty) {
         this.enterLinkStringProperty.set(enterLinkStringProperty);
-    }
-
-    public boolean isStartButtonDisableProperty() {
-        return startButtonDisableProperty.get();
-    }
-
-    public BooleanProperty startButtonDisablePropertyProperty() {
-        return startButtonDisableProperty;
-    }
-
-    public void setStartButtonDisableProperty(boolean startButtonDisableProperty) {
-        this.startButtonDisableProperty.set(startButtonDisableProperty);
     }
 
     public String getMessageStringProperty() {
@@ -264,15 +243,15 @@ public class MainController implements Initializable {
         this.enterBazusBTextFieldProperty.set(enterBazusBTextFieldProperty);
     }
 
-    public boolean isStartBazusButtonDisableProperty() {
-        return startBazusButtonDisableProperty.get();
+    public boolean isDisableButtonsProperty() {
+        return disableButtonsProperty.get();
     }
 
-    public BooleanProperty startBazusButtonDisablePropertyProperty() {
-        return startBazusButtonDisableProperty;
+    public BooleanProperty disableButtonsPropertyProperty() {
+        return disableButtonsProperty;
     }
 
-    public void setStartBazusButtonDisableProperty(boolean startBazusButtonDisableProperty) {
-        this.startBazusButtonDisableProperty.set(startBazusButtonDisableProperty);
+    public void setDisableButtonsProperty(boolean disableButtonsProperty) {
+        this.disableButtonsProperty.set(disableButtonsProperty);
     }
 }

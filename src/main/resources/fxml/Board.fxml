@@ -43,11 +43,19 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <Button fx:id="startBazusButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBazusStartButtonAction" text="Bazus - wypakuj pliki instalacyjne do porownania">
+      <HBox>
+         <children>
+            <Button fx:id="startBazusButton" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleBazusStartButtonAction" text="Bazus - wypakuj pliki instalacyjne do porownania" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="deleteBazusButton" mnemonicParsing="false" onAction="#handleDeleteBazusButtonAction" text="Wyczyść foldery" />
+         </children>
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
-      </Button>
+      </HBox>
       <Label alignment="CENTER" contentDisplay="CENTER" text="Pliki sa wypakowywane do C:\BazusTemp" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />

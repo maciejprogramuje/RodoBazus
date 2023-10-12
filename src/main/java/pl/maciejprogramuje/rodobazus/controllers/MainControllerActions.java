@@ -4,9 +4,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SpinnerValueFactory;
-import pl.maciejprogramuje.rodobazus.JarComparator;
-import pl.maciejprogramuje.rodobazus.FolderReader;
-import pl.maciejprogramuje.rodobazus.Main;
+import pl.maciejprogramuje.rodobazus.*;
 import pl.maciejprogramuje.rodobazus.models.FileRow;
 
 import java.awt.*;
@@ -35,8 +33,7 @@ public class MainControllerActions {
         if (path.isEmpty()) {
             mainController.setMessageStringProperty(Main.bundles.getString("label.message.noLink.text"));
         } else {
-            mainController.setSpinnerVisibleProperty(true);
-            mainController.setStartButtonDisableProperty(true);
+            mainController.setDisableButtonsProperty(true);
             mainController.setMessageStringProperty("");
             mainController.setPathStringProperty("");
 
@@ -55,8 +52,7 @@ public class MainControllerActions {
 
             task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                 public void handle(WorkerStateEvent event) {
-                    mainController.setSpinnerVisibleProperty(false);
-                    mainController.setStartButtonDisableProperty(false);
+                    mainController.setDisableButtonsProperty(false);
                     mainController.setCustomRowBooleanProperty(false);
 
                     setSpinnerProperties(rowToAnaliseIndex);
@@ -149,56 +145,22 @@ public class MainControllerActions {
         System.out.println("folder=" + folder + ", gitCommitId=" + gitCommitId + ", gitBranch=" + gitBranch);
 
         String command = "git checkout";
-        doGitCommand(command, folder, gitBranch, false);
+        GitUtility.doGitCommand(command, folder, gitBranch, false);
 
         command = "git diff " + gitCommitId + " HEAD --name-only";
-        doGitCommand(command, folder, "", true);
-    }
-
-    private void doGitCommand(String command, String folder, String branchName, boolean isFileListGenerated) {
-        ArrayList<String> lines = new ArrayList<>();
-
-        try {
-            String[] commands = {
-                    "cmd",
-                    "/c",
-                    command + " " + branchName
-            };
-
-            Process process = Runtime.getRuntime().exec(commands, null, new File(folder));
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 8 * 1024);
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                if (!line.isEmpty()) {
-                    System.out.println("GIT -->>" + line);
-
-                    if (isFileListGenerated) {
-                        lines.add(line.trim());
-                    }
-                }
-            }
-            bufferedReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        GitUtility.doGitCommand(command, folder, "", true);
     }
 
     public void handleBazusStartButton() {
         final Task<Void> task = new Task<Void>() {
             @Override
-            protected Void call() throws IOException {
-                mainController.setSpinnerVisibleProperty(true);
-                mainController.setStartBazusButtonDisableProperty(true);
+            protected Void call() throws IOException, InterruptedException {
+                mainController.setDisableButtonsProperty(true);
 
                 jarComparator = new JarComparator(mainController.getEnterBazusATextFieldProperty(), mainController.getEnterBazusBTextFieldProperty());
                 jarComparator.downloadRepos(mainController.pathStringPropertyProperty());
-
-                //to przeszkadza w usuwaniu
                 jarComparator.extractRepos(mainController.pathStringPropertyProperty());
-
-                jarComparator.deleteExcludedFileTypes(mainController.pathStringPropertyProperty());
+                jarComparator.clearFoldersFromExcludedFiles(mainController.pathStringPropertyProperty());
 
                 return null;
             }
@@ -206,8 +168,32 @@ public class MainControllerActions {
 
         task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             public void handle(WorkerStateEvent event) {
-                mainController.setSpinnerVisibleProperty(false);
-                mainController.setStartBazusButtonDisableProperty(false);
+                mainController.setDisableButtonsProperty(false);
+            }
+        });
+
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+    public void handleDeleteBazusButton() {
+        final Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws IOException, InterruptedException {
+                mainController.setDisableButtonsProperty(true);
+
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\_temp\\A");
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\_temp\\B");
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\A");
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\B");
+
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            public void handle(WorkerStateEvent event) {
+                mainController.setDisableButtonsProperty(false);
             }
         });
 
