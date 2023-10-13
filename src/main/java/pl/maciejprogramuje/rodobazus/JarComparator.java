@@ -13,13 +13,15 @@ public class JarComparator {
     private final String enterBazusB;
     private List<String> jarListA;
     private List<String> jarListB;
+    private StringProperty pathProperty;
 
-    public JarComparator(String enterBazusA, String enterBazusB) {
+    public JarComparator(String enterBazusA, String enterBazusB, StringProperty pathProperty) {
         this.enterBazusA = enterBazusA;
         this.enterBazusB = enterBazusB;
+        this.pathProperty = pathProperty;
     }
 
-    public void downloadRepos(StringProperty pathProperty) {
+    public void downloadRepos() {
         try {
             jarListA = fillJarList(enterBazusA);
             jarListB = fillJarList(enterBazusB);
@@ -41,17 +43,17 @@ public class JarComparator {
         }
     }
 
-    public void extractRepos(StringProperty pathProperty) throws IOException, InterruptedException {
+    public void extractRepos() throws IOException, InterruptedException {
         for (String jar : jarListA) {
-            extractToDirectories(pathProperty, jar, "A");
+            extractToDirectories(jar, "A");
         }
 
         for (String jar : jarListB) {
-            extractToDirectories(pathProperty, jar, "B");
+            extractToDirectories(jar, "B");
         }
     }
 
-    private void extractToDirectories(StringProperty pathProperty, String jar, String version) throws IOException, InterruptedException {
+    private void extractToDirectories(String jar, String version) {
         String fileName = jar.substring(jar.lastIndexOf("/") + 1);
         String fileUrl = "C:\\BazusTemp\\_temp\\" + version + "\\" + fileName;
         String saveDir = "";
@@ -89,13 +91,13 @@ public class JarComparator {
         return lines;
     }
 
-    public void clearFoldersFromExcludedFiles(StringProperty pathProperty) {
+    public void cleanFoldersFromExcludedFiles() {
         try {
             pathProperty.setValue("Trwa czyszczenie C:\\BazusTemp\\A z *.class itp.");
-            DeleteFilesUtility.deleteExcludedFiles("C:\\BazusTemp\\A");
+            DeleteFilesUtility.cleanFolders("C:\\BazusTemp\\A", "A");
 
             pathProperty.setValue("Trwa czyszczenie C:\\BazusTemp\\B z *.class itp.");
-            DeleteFilesUtility.deleteExcludedFiles("C:\\BazusTemp\\B");
+            DeleteFilesUtility.cleanFolders("C:\\BazusTemp\\B", "B");
 
             pathProperty.setValue("Oczyszczanie folderow zakonczone");
         } catch (IOException e) {

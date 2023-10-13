@@ -8,10 +8,8 @@ import pl.maciejprogramuje.rodobazus.*;
 import pl.maciejprogramuje.rodobazus.models.FileRow;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MainControllerActions {
@@ -157,11 +155,14 @@ public class MainControllerActions {
             protected Void call() throws IOException, InterruptedException {
                 mainController.setDisableButtonsProperty(true);
 
-                jarComparator = new JarComparator(mainController.getEnterBazusATextFieldProperty(), mainController.getEnterBazusBTextFieldProperty());
-                jarComparator.downloadRepos(mainController.pathStringPropertyProperty());
-                jarComparator.extractRepos(mainController.pathStringPropertyProperty());
-                jarComparator.clearFoldersFromExcludedFiles(mainController.pathStringPropertyProperty());
-
+                jarComparator = new JarComparator(
+                        mainController.getEnterBazusATextFieldProperty(),
+                        mainController.getEnterBazusBTextFieldProperty(),
+                        mainController.pathStringPropertyProperty()
+                );
+                jarComparator.downloadRepos();
+                jarComparator.extractRepos();
+                jarComparator.cleanFoldersFromExcludedFiles();
                 return null;
             }
         };
@@ -179,13 +180,17 @@ public class MainControllerActions {
     public void handleDeleteBazusButton() {
         final Task<Void> task = new Task<Void>() {
             @Override
-            protected Void call() throws IOException, InterruptedException {
+            protected Void call() throws IOException {
                 mainController.setDisableButtonsProperty(true);
 
                 DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\_temp\\A");
                 DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\_temp\\B");
                 DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\A");
                 DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\B");
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Docs\\A");
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Docs\\B");
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Pics\\A");
+                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Pics\\B");
 
                 return null;
             }
