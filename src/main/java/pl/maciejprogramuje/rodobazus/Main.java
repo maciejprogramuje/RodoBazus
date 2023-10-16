@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class Main extends Application {
     // dla .jar jest specjalny warunek
-    public static final String[] EXCLUDED_EXTENSIONS = {"class", "jasper", "eot", "woff", "woff2", "jar"};
+    public static final String[] EXCLUDED_EXTENSIONS = {"class", "jasper", "eot", "woff", "woff2", "jar", "rsa"};
     public static final String[] EXCLUDED_DIRECTORIES = {".git"};
     public static final String[] DOC_FILES = {"xls", "xlsx", "doc", "docx", "pdf"};
     public static final String[] PIC_FILES = {"png", "jpg", "svg", "gif"};

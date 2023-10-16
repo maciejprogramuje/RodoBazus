@@ -2,7 +2,6 @@ package pl.maciejprogramuje.rodobazus;
 
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import java.util.concurrent.TimeUnit;
 
 public class ExtractorUtility {
     public static void extractFile(String fileURL, String saveDir) {

@@ -48,25 +48,23 @@ public class MainControllerActions {
                 }
             };
 
-            task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                public void handle(WorkerStateEvent event) {
-                    mainController.setDisableButtonsProperty(false);
-                    mainController.setCustomRowBooleanProperty(false);
+            task.setOnSucceeded(event -> {
+                mainController.setDisableButtonsProperty(false);
+                mainController.setCustomRowBooleanProperty(false);
 
-                    setSpinnerProperties(rowToAnaliseIndex);
+                setSpinnerProperties(rowToAnaliseIndex);
 
-                    MainControllerUtils.showOnMessageLabelPattern(
-                            Main.bundles.getString("label.message.done.text"),
-                            mainController.messageStringPropertyProperty(),
-                            folderReader.getFileRows().size());
+                MainControllerUtils.showOnMessageLabelPattern(
+                        Main.bundles.getString("label.message.done.text"),
+                        mainController.messageStringPropertyProperty(),
+                        folderReader.getFileRows().size());
 
-                    MainControllerUtils.showOnMessageLabelPattern(
-                            Main.bundles.getString("button.next.title"),
-                            mainController.nextRowStringPropertyProperty(),
-                            rowToAnaliseIndex,
-                            folderReader.getFileRows().get(rowToAnaliseIndex).getRowName()
-                    );
-                }
+                MainControllerUtils.showOnMessageLabelPattern(
+                        Main.bundles.getString("button.next.title"),
+                        mainController.nextRowStringPropertyProperty(),
+                        rowToAnaliseIndex,
+                        folderReader.getFileRows().get(rowToAnaliseIndex).getRowName()
+                );
             });
 
             Thread thread = new Thread(task);
@@ -135,8 +133,10 @@ public class MainControllerActions {
                         initialValue));
     }
 
+    /*
     public void handleGetFileListFromGit() {
         final String folder = mainController.getEnterLinkStringProperty();
+
         String gitCommitId = mainController.getEnterGitCommitIdTextFieldStringProperty();
         String gitBranch = mainController.getEnterGitBranchTextFieldStringProperty();
 
@@ -148,11 +148,12 @@ public class MainControllerActions {
         command = "git diff " + gitCommitId + " HEAD --name-only";
         GitUtility.doGitCommand(command, folder, "", true);
     }
+    */
 
     public void handleBazusStartButton() {
         final Task<Void> task = new Task<Void>() {
             @Override
-            protected Void call() throws IOException, InterruptedException {
+            protected Void call() {
                 mainController.setDisableButtonsProperty(true);
 
                 jarComparator = new JarComparator(
@@ -160,49 +161,64 @@ public class MainControllerActions {
                         mainController.getEnterBazusBTextFieldProperty(),
                         mainController.pathStringPropertyProperty()
                 );
-                jarComparator.downloadRepos();
-                jarComparator.extractRepos();
+                //jarComparator.downloadRepos();
+                //jarComparator.extractRepos();
                 jarComparator.cleanFoldersFromExcludedFiles();
+
                 return null;
             }
         };
 
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            public void handle(WorkerStateEvent event) {
-                mainController.setDisableButtonsProperty(false);
+        task.setOnSucceeded(event -> mainController.setDisableButtonsProperty(false));
+
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+    public void handleWuStartButton() {
+        final Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                mainController.setDisableButtonsProperty(true);
+
+                jarComparator = new JarComparator(
+                        mainController.getEnterWuATextFieldProperty(),
+                        mainController.getEnterWuBTextFieldProperty(),
+                        mainController.pathStringPropertyProperty()
+                );
+                jarComparator.cleanFoldersFromExcludedFiles();
+
+                return null;
             }
-        });
+        };
+
+        task.setOnSucceeded(event -> mainController.setDisableButtonsProperty(false));
 
         Thread thread = new Thread(task);
         thread.start();
     }
 
     public void handleDeleteBazusButton() {
-        final Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws IOException {
-                mainController.setDisableButtonsProperty(true);
+        DeleteFilesUtility.deleteAllFilesInFolders(mainController,
+                "C:\\RodoTemp\\BazusRodo\\_temp\\A",
+                "C:\\RodoTemp\\BazusRodo\\_temp\\B",
+                "C:\\RodoTemp\\BazusRodo\\A",
+                "C:\\RodoTemp\\BazusRodo\\B",
+                "C:\\RodoTemp\\BazusRodo\\Docs\\A",
+                "C:\\RodoTemp\\BazusRodo\\Docs\\B",
+                "C:\\RodoTemp\\BazusRodo\\Pics\\A",
+                "C:\\RodoTemp\\BazusRodo\\Pics\\B"
+        );
+    }
 
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\_temp\\A");
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\_temp\\B");
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\A");
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\B");
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Docs\\A");
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Docs\\B");
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Pics\\A");
-                DeleteFilesUtility.deleteAllFilesInFolder("C:\\BazusTemp\\Pics\\B");
-
-                return null;
-            }
-        };
-
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            public void handle(WorkerStateEvent event) {
-                mainController.setDisableButtonsProperty(false);
-            }
-        });
-
-        Thread thread = new Thread(task);
-        thread.start();
+    public void handleDeleteWuButton() {
+        DeleteFilesUtility.deleteAllFilesInFolders(mainController,
+                "C:\\RodoTemp\\WuRodo\\A",
+                "C:\\RodoTemp\\WuRodo\\B",
+                "C:\\RodoTemp\\WuRodo\\Docs\\A",
+                "C:\\RodoTemp\\WuRodo\\Docs\\B",
+                "C:\\RodoTemp\\WuRodo\\Pics\\A",
+                "C:\\RodoTemp\\WuRodo\\Pics\\B"
+        );
     }
 }

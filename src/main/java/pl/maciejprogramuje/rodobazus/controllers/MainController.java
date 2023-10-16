@@ -29,15 +29,6 @@ public class MainController implements Initializable {
     public TextArea pathLabel;
 
     @FXML
-    public Button getFileListFromGit;
-
-    @FXML
-    public TextField enterGitCommitIdTextField;
-
-    @FXML
-    public TextField enterGitBranchTextField;
-
-    @FXML
     public TextField enterBazusATextField;
 
     @FXML
@@ -50,22 +41,47 @@ public class MainController implements Initializable {
     public Button deleteBazusButton;
 
     @FXML
+    public TextField enterWuATextField;
+
+    @FXML
+    public TextField enterWuBTextField;
+
+    @FXML
+    public Button startWuButton;
+
+    @FXML
+    public Button deleteWuButton;
+
+    @FXML
     private Button startButton;
 
     @FXML
     private Label messageLabel;
+
+    /*
+    @FXML
+    public Button getFileListFromGit;
+    @FXML
+    public TextField enterGitBranchTextField;
+    @FXML
+    public TextField enterGitCommitIdTextField;
+    */
 
     private StringProperty enterLinkStringProperty;
     private StringProperty messageStringProperty;
     private StringProperty nextRowStringProperty;
     private BooleanProperty customRowBooleanProperty;
     private StringProperty pathStringProperty;
-    private StringProperty enterGitCommitIdTextFieldStringProperty;
-    private StringProperty enterGitBranchTextFieldStringProperty;
     private StringProperty enterBazusATextFieldProperty;
     private StringProperty enterBazusBTextFieldProperty;
-
+    private StringProperty enterWuATextFieldProperty;
+    private StringProperty enterWuBTextFieldProperty;
     private BooleanProperty disableButtonsProperty;
+
+    /*
+    private StringProperty enterGitCommitIdTextFieldStringProperty;
+    private StringProperty enterGitBranchTextFieldStringProperty;
+    */
 
     MainControllerActions mainControllerActions;
 
@@ -78,9 +94,10 @@ public class MainController implements Initializable {
         startButton.disableProperty().bind(disableButtonsProperty);
         startBazusButton.disableProperty().bind(disableButtonsProperty);
         deleteBazusButton.disableProperty().bind(disableButtonsProperty);
+        startWuButton.disableProperty().bind(disableButtonsProperty);
+        deleteWuButton.disableProperty().bind(disableButtonsProperty);
 
-
-        enterLinkStringProperty = new SimpleStringProperty("C:\\Tomcat\\webBazusWU\\tomcat\\webapps\\wu");
+        enterLinkStringProperty = new SimpleStringProperty("C:\\Tomcat\\webBazusWU\\tomcat\\webapps");
         enterLinkTextField.textProperty().bindBidirectional(enterLinkStringProperty);
 
         messageStringProperty = new SimpleStringProperty("");
@@ -97,31 +114,35 @@ public class MainController implements Initializable {
         pathStringProperty = new SimpleStringProperty("");
         pathLabel.textProperty().bind(pathStringProperty);
 
+        /*
         enterGitCommitIdTextFieldStringProperty = new SimpleStringProperty("925ccdf");
         enterGitCommitIdTextField.textProperty().bindBidirectional(enterGitCommitIdTextFieldStringProperty);
 
         enterGitBranchTextFieldStringProperty = new SimpleStringProperty("BUILD_master_WU_PROD");
         enterGitBranchTextField.textProperty().bindBidirectional(enterGitBranchTextFieldStringProperty);
+        */
 
-        enterBazusATextFieldProperty = new SimpleStringProperty("C:\\BazusTemp\\bazus A.jnlp");
+        enterBazusATextFieldProperty = new SimpleStringProperty("C:\\RodoTemp\\BazusRodo\\bazus A.jnlp");
         enterBazusATextField.textProperty().bindBidirectional(enterBazusATextFieldProperty);
-
-        enterBazusBTextFieldProperty = new SimpleStringProperty("C:\\BazusTemp\\bazus B.jnlp");
+        enterBazusBTextFieldProperty = new SimpleStringProperty("C:\\RodoTemp\\BazusRodo\\bazus B.jnlp");
         enterBazusBTextField.textProperty().bindBidirectional(enterBazusBTextFieldProperty);
+
+        enterWuATextFieldProperty = new SimpleStringProperty("C:\\RodoTemp\\WuRodo\\A");
+        enterWuATextField.textProperty().bindBidirectional(enterWuATextFieldProperty);
+        enterWuBTextFieldProperty = new SimpleStringProperty("C:\\RodoTemp\\WuRodo\\B");
+        enterWuBTextField.textProperty().bindBidirectional(enterWuBTextFieldProperty);
     }
 
     public void handleStartButtonAction() {
         mainControllerActions.handleStartButton();
     }
 
-    public void handleNextRowButtonAction() { mainControllerActions.handleNextRowButton();
+    public void handleNextRowButtonAction() {
+        mainControllerActions.handleNextRowButton();
     }
 
-    public void handleCustomRowButtonAction() { mainControllerActions.handleCustomRowButton();
-    }
-
-    public void handleGetFileListFromGitAction() {
-        mainControllerActions.handleGetFileListFromGit();
+    public void handleCustomRowButtonAction() {
+        mainControllerActions.handleCustomRowButton();
     }
 
     public void handleBazusStartButtonAction() {
@@ -132,6 +153,19 @@ public class MainController implements Initializable {
         mainControllerActions.handleDeleteBazusButton();
     }
 
+    public void handleWuStartButtonAction() {
+        mainControllerActions.handleWuStartButton();
+    }
+
+    public void handleDeleteWuButtonAction() {
+        mainControllerActions.handleDeleteWuButton();
+    }
+
+    /*
+    public void handleGetFileListFromGitAction() {
+        mainControllerActions.handleGetFileListFromGit();
+    }
+    */
 
     //--------------------------------------------
 
@@ -195,30 +229,6 @@ public class MainController implements Initializable {
         this.pathStringProperty.set(pathStringProperty);
     }
 
-    public String getEnterGitCommitIdTextFieldStringProperty() {
-        return enterGitCommitIdTextFieldStringProperty.get();
-    }
-
-    public StringProperty enterGitCommitIdTextFieldStringPropertyProperty() {
-        return enterGitCommitIdTextFieldStringProperty;
-    }
-
-    public void setEnterGitCommitIdTextFieldStringProperty(String enterGitCommitIdTextFieldStringProperty) {
-        this.enterGitCommitIdTextFieldStringProperty.set(enterGitCommitIdTextFieldStringProperty);
-    }
-
-    public String getEnterGitBranchTextFieldStringProperty() {
-        return enterGitBranchTextFieldStringProperty.get();
-    }
-
-    public StringProperty enterGitBranchTextFieldStringPropertyProperty() {
-        return enterGitBranchTextFieldStringProperty;
-    }
-
-    public void setEnterGitBranchTextFieldStringProperty(String enterGitBranchTextFieldStringProperty) {
-        this.enterGitBranchTextFieldStringProperty.set(enterGitBranchTextFieldStringProperty);
-    }
-
     public String getEnterBazusATextFieldProperty() {
         return enterBazusATextFieldProperty.get();
     }
@@ -254,4 +264,54 @@ public class MainController implements Initializable {
     public void setDisableButtonsProperty(boolean disableButtonsProperty) {
         this.disableButtonsProperty.set(disableButtonsProperty);
     }
+
+    public String getEnterWuATextFieldProperty() {
+        return enterWuATextFieldProperty.get();
+    }
+
+    public StringProperty enterWuATextFieldPropertyProperty() {
+        return enterWuATextFieldProperty;
+    }
+
+    public void setEnterWuATextFieldProperty(String enterWuATextFieldProperty) {
+        this.enterWuATextFieldProperty.set(enterWuATextFieldProperty);
+    }
+
+    public String getEnterWuBTextFieldProperty() {
+        return enterWuBTextFieldProperty.get();
+    }
+
+    public StringProperty enterWuBTextFieldPropertyProperty() {
+        return enterWuBTextFieldProperty;
+    }
+
+    public void setEnterWuBTextFieldProperty(String enterWuBTextFieldProperty) {
+        this.enterWuBTextFieldProperty.set(enterWuBTextFieldProperty);
+    }
+
+    /*
+    public String getEnterGitCommitIdTextFieldStringProperty() {
+        return enterGitCommitIdTextFieldStringProperty.get();
+    }
+
+    public StringProperty enterGitCommitIdTextFieldStringPropertyProperty() {
+        return enterGitCommitIdTextFieldStringProperty;
+    }
+
+    public void setEnterGitCommitIdTextFieldStringProperty(String enterGitCommitIdTextFieldStringProperty) {
+        this.enterGitCommitIdTextFieldStringProperty.set(enterGitCommitIdTextFieldStringProperty);
+    }
+
+    public String getEnterGitBranchTextFieldStringProperty() {
+        return enterGitBranchTextFieldStringProperty.get();
+    }
+
+    public StringProperty enterGitBranchTextFieldStringPropertyProperty() {
+        return enterGitBranchTextFieldStringProperty;
+    }
+
+    public void setEnterGitBranchTextFieldStringProperty(String enterGitBranchTextFieldStringProperty) {
+        this.enterGitBranchTextFieldStringProperty.set(enterGitBranchTextFieldStringProperty);
+    }
+    */
 }

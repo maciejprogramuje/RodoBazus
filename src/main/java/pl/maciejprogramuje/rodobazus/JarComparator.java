@@ -32,18 +32,18 @@ public class JarComparator {
             jarListB.forEach(System.out::println);
 
             for (String jar : jarListA) {
-                pathProperty.setValue(DownloadUtility.downloadFile(jar, "C:\\BazusTemp\\_temp\\A"));
+                pathProperty.setValue(DownloadUtility.downloadFile(jar, "C:\\RodoTemp\\BazusRodo\\_temp\\A"));
             }
 
             for (String jar : jarListB) {
-                pathProperty.setValue(DownloadUtility.downloadFile(jar, "C:\\BazusTemp\\_temp\\B"));
+                pathProperty.setValue(DownloadUtility.downloadFile(jar, "C:\\RodoTemp\\BazusRodo\\_temp\\B"));
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public void extractRepos() throws IOException, InterruptedException {
+    public void extractRepos() {
         for (String jar : jarListA) {
             extractToDirectories(jar, "A");
         }
@@ -55,12 +55,12 @@ public class JarComparator {
 
     private void extractToDirectories(String jar, String version) {
         String fileName = jar.substring(jar.lastIndexOf("/") + 1);
-        String fileUrl = "C:\\BazusTemp\\_temp\\" + version + "\\" + fileName;
+        String fileUrl = "C:\\RodoTemp\\BazusRodo\\_temp\\" + version + "\\" + fileName;
         String saveDir = "";
         if (fileName.contains("-")) {
-            saveDir = "C:\\BazusTemp\\" + version + "\\" + fileName.substring(0, fileName.lastIndexOf("-"));
+            saveDir = "C:\\RodoTemp\\BazusRodo\\" + version + "\\" + fileName.substring(0, fileName.lastIndexOf("-"));
         } else {
-            saveDir = "C:\\BazusTemp\\" + version + "\\" + fileName.substring(0, fileName.indexOf(".jar"));
+            saveDir = "C:\\RodoTemp\\BazusRodo\\" + version + "\\" + fileName.substring(0, fileName.indexOf(".jar"));
         }
 
         pathProperty.setValue("Rozpakowywanie: " + fileUrl);
@@ -93,11 +93,11 @@ public class JarComparator {
 
     public void cleanFoldersFromExcludedFiles() {
         try {
-            pathProperty.setValue("Trwa czyszczenie C:\\BazusTemp\\A z *.class itp.");
-            DeleteFilesUtility.cleanFolders("C:\\BazusTemp\\A", "A");
+            pathProperty.setValue("Trwa czyszczenie C:\\RodoTemp\\BazusRodo\\A z *.class itp.");
+            DeleteFilesUtility.cleanFolders("C:\\RodoTemp\\BazusRodo\\A", "A");
 
-            pathProperty.setValue("Trwa czyszczenie C:\\BazusTemp\\B z *.class itp.");
-            DeleteFilesUtility.cleanFolders("C:\\BazusTemp\\B", "B");
+            pathProperty.setValue("Trwa czyszczenie C:\\RodoTemp\\BazusRodo\\B z *.class itp.");
+            DeleteFilesUtility.cleanFolders("C:\\RodoTemp\\BazusRodo\\B", "B");
 
             pathProperty.setValue("Oczyszczanie folderow zakonczone");
         } catch (IOException e) {

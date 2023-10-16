@@ -12,16 +12,24 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
+<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.maciejprogramuje.rodobazus.controllers.MainController">
    <children>
+      <Label text="BAZUS">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
       <HBox alignment="CENTER_LEFT">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Bazus - sciezka pliku A do analizy:" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Bazus - sciezka pliku A (starszego):" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets right="34.0" />
+                  <Insets right="16.0" />
                </HBox.margin>
             </Label>
             <TextField fx:id="enterBazusATextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
@@ -29,12 +37,12 @@
       </HBox>
       <HBox alignment="CENTER_LEFT">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Bazus - sciezka pliku B do analizy:" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Bazus - sciezka pliku B (nowszego):" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
                <HBox.margin>
-                  <Insets right="34.0" />
+                  <Insets right="13.0" />
                </HBox.margin>
             </Label>
             <TextField fx:id="enterBazusBTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
@@ -45,7 +53,7 @@
       </HBox>
       <HBox>
          <children>
-            <Button fx:id="startBazusButton" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleBazusStartButtonAction" text="Bazus - wypakuj pliki instalacyjne do porownania" HBox.hgrow="ALWAYS">
+            <Button fx:id="startBazusButton" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleBazusStartButtonAction" text="Przygotuj pliki do analizy porownawczej" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin>
@@ -56,7 +64,7 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Pliki sa wypakowywane do C:\BazusTemp" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Pliki sa wypakowywane do C:\RodoTemp\BazusRodo" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -64,7 +72,70 @@
             <Insets top="5.0" />
          </VBox.margin>
       </Label>
-      <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-378.27471923828125" startY="9.292893409729004">
+      <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-576.9428100585938" startY="6.464483261108398">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Line>
+      <Label text="WIRTUALNA UCZELNIA / IRK">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="WU - sciezka folderu A (starszego):" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="enterWuATextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="WU - sciezka folderu B (nowszego):" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="13.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="enterWuBTextField" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox>
+         <children>
+            <Button fx:id="startWuButton" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleWuStartButtonAction" text="Przygotuj foldery do analizy porownawczej" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="deleteWuButton" mnemonicParsing="false" onAction="#handleDeleteWuButtonAction" text="Wyczyść foldery" />
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Pliki sa wypakowywane do C:\RodoTemp\WuRodo" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Label>
+      <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-576.9428100585938" startY="6.464483261108398">
          <VBox.margin>
             <Insets top="10.0" />
          </VBox.margin>
@@ -89,6 +160,8 @@
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin></Button>
+
+      <!--
       <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-378.27471923828125" startY="9.292893409729004">
          <VBox.margin>
             <Insets top="5.0" />
@@ -130,31 +203,33 @@
             <Insets top="5.0" />
          </VBox.margin>
       </HBox>
-      <Line endX="101.0181884765625" endY="6.4644670486450195" startX="-378.27471923828125" startY="9.292893409729004">
+      -->
+
+      <Line endX="298.0181884765625" endY="6.4644670486450195" startX="-378.27471923828125" startY="9.292893409729004">
          <VBox.margin>
             <Insets top="5.0" />
          </VBox.margin>
       </Line>
-      <Label fx:id="messageLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="126" layoutY="120" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="nazwa" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+      <Label fx:id="messageLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="126" layoutY="120" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="29.0" text="nazwa" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
       </Label>
-      <Label fx:id="messageLabel1" alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="Aktualnie analizowany plik:" textAlignment="CENTER" wrapText="true">
+      <Label alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="Aktualnie analizowany plik:" textAlignment="CENTER" wrapText="true">
          <VBox.margin>
             <Insets bottom="5.0" />
          </VBox.margin>
       </Label>
-      <TextArea fx:id="pathLabel" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" promptText="ścieżka" wrapText="true" VBox.vgrow="ALWAYS" />
+      <TextArea fx:id="pathLabel" editable="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" promptText="ścieżka" wrapText="true" VBox.vgrow="ALWAYS" />
       <Label maxWidth="1.7976931348623157E308" text="Automatyczne przechodzenie do kolejnego pliku:">
          <VBox.margin>
-            <Insets bottom="5.0" top="30.0" />
+            <Insets bottom="5.0" top="15.0" />
          </VBox.margin>
       </Label>
       <Button fx:id="nextRowButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleNextRowButtonAction" text="%button.next.title" />
       <Label maxWidth="1.7976931348623157E308" text="Ręczne przechodzenie do wskazanego pliku:">
          <VBox.margin>
-            <Insets bottom="5.0" top="30.0" />
+            <Insets bottom="5.0" top="5.0" />
          </VBox.margin>
       </Label>
       <HBox alignment="CENTER">
@@ -193,7 +268,7 @@
             <Font size="10.0" />
          </font>
          <VBox.margin>
-            <Insets left="5.0" top="15.0" />
+            <Insets left="5.0" top="5.0" />
          </VBox.margin>
       </Label>
    </children>
