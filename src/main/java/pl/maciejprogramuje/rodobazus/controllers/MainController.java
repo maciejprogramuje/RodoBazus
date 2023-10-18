@@ -11,46 +11,52 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
-    public ProgressIndicator spinner;
+    private ProgressIndicator spinner;
 
     @FXML
-    public TextField enterLinkTextField;
+    private TextField enterLinkTextField;
 
     @FXML
-    public Button nextRowButton;
+    private Button nextRowButton;
 
     @FXML
     public Spinner<Integer> customRowSpinner;
 
     @FXML
-    public Button customRowButton;
+    private Button customRowButton;
 
     @FXML
-    public TextArea pathLabel;
+    private TextArea pathLabel;
 
     @FXML
-    public TextField enterBazusATextField;
+    private TextField enterBazusATextField;
 
     @FXML
-    public TextField enterBazusBTextField;
+    private TextField enterBazusBTextField;
 
     @FXML
-    public Button startBazusButton;
+    private Button startBazusButton;
 
     @FXML
-    public Button deleteBazusButton;
+    private Button deleteBazusButton;
 
     @FXML
-    public TextField enterWuATextField;
+    private TextField enterWuATextField;
 
     @FXML
-    public TextField enterWuBTextField;
+    private TextField enterWuBTextField;
 
     @FXML
-    public Button startWuButton;
+    private Button startWuButton;
 
     @FXML
-    public Button deleteWuButton;
+    private Button deleteWuButton;
+
+    @FXML
+    private Button copyAWuButton;
+
+    @FXML
+    private Button copyBWuButton;
 
     @FXML
     private Button startButton;
@@ -96,6 +102,8 @@ public class MainController implements Initializable {
         deleteBazusButton.disableProperty().bind(disableButtonsProperty);
         startWuButton.disableProperty().bind(disableButtonsProperty);
         deleteWuButton.disableProperty().bind(disableButtonsProperty);
+        copyAWuButton.disableProperty().bind(disableButtonsProperty);
+        copyBWuButton.disableProperty().bind(disableButtonsProperty);
 
         enterLinkStringProperty = new SimpleStringProperty("C:\\Tomcat\\webBazusWU\\tomcat\\webapps");
         enterLinkTextField.textProperty().bindBidirectional(enterLinkStringProperty);
@@ -127,9 +135,9 @@ public class MainController implements Initializable {
         enterBazusBTextFieldProperty = new SimpleStringProperty("C:\\RodoTemp\\BazusRodo\\bazus B.jnlp");
         enterBazusBTextField.textProperty().bindBidirectional(enterBazusBTextFieldProperty);
 
-        enterWuATextFieldProperty = new SimpleStringProperty("C:\\RodoTemp\\WuRodo\\A");
+        enterWuATextFieldProperty = new SimpleStringProperty("C:\\Tomcat\\webBazusWU\\tomcat\\webapps");
         enterWuATextField.textProperty().bindBidirectional(enterWuATextFieldProperty);
-        enterWuBTextFieldProperty = new SimpleStringProperty("C:\\RodoTemp\\WuRodo\\B");
+        enterWuBTextFieldProperty = new SimpleStringProperty("C:\\Tomcat\\webBazusWU\\tomcat\\webapps");
         enterWuBTextField.textProperty().bindBidirectional(enterWuBTextFieldProperty);
     }
 
@@ -159,6 +167,14 @@ public class MainController implements Initializable {
 
     public void handleDeleteWuButtonAction() {
         mainControllerActions.handleDeleteWuButton();
+    }
+
+    public void handleCopyAWuButtonAction() {
+        mainControllerActions.handleCopyAWuButton();
+    }
+
+    public void handleCopyBWuButtonAction() {
+        mainControllerActions.handleCopyBWuButton();
     }
 
     /*
@@ -288,6 +304,10 @@ public class MainController implements Initializable {
     public void setEnterWuBTextFieldProperty(String enterWuBTextFieldProperty) {
         this.enterWuBTextFieldProperty.set(enterWuBTextFieldProperty);
     }
+
+
+
+
 
     /*
     public String getEnterGitCommitIdTextFieldStringProperty() {

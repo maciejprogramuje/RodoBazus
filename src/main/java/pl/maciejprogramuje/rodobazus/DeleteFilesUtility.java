@@ -6,14 +6,14 @@ import pl.maciejprogramuje.rodobazus.controllers.MainController;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.StandardCopyOption;
-import java.text.SimpleDateFormat;
+import java.nio.file.Files;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static pl.maciejprogramuje.rodobazus.Main.*;
 
 public class DeleteFilesUtility {
-    public static void cleanFolders(String rootPath, String branch) throws IOException {
+    public static void cleanFolders(String rootPath, String app) throws IOException {
         File directory = new File(rootPath);
 
         File[] files = directory.listFiles();
@@ -25,34 +25,28 @@ public class DeleteFilesUtility {
                     String extension = f.getName().substring(f.getName().lastIndexOf(".") + 1);
 
                     if (!clean(f, name, extension)) {
-                        if (!move("C:\\RodoTemp\\BazusRodo\\Docs\\", branch, DOC_FILES, extension, f, name)) {
-                            move("C:\\RodoTemp\\BazusRodo\\Pics\\", branch, PIC_FILES, extension, f, name);
+                        if (!move("C:\\RodoTemp\\" + app + "\\Docs\\", DOC_FILES, f)) {
+                            move("C:\\RodoTemp\\" + app + "\\Pics\\", PIC_FILES, f);
                         }
                     }
                 } else if (f.isDirectory()) {
-                    System.out.println("dir " + f.getAbsolutePath());
-                    cleanFolders(f.getAbsolutePath(), branch);
+                    cleanFolders(f.getAbsolutePath(), app);
                 }
             }
         }
     }
 
-    private static boolean move(String x, String branch, String[] docFiles, String extension, File f, String name) throws IOException {
-        System.out.println("move");
-
-        String destFolder = x + branch;
+    private static boolean move(String destFolder, String[] docFiles, File oldFile) throws IOException {
+        String name = oldFile.getName();
+        String extension = name.substring(name.lastIndexOf(".") + 1);
 
         for (String docExtension : docFiles) {
             if (docExtension.equals(extension)) {
+                File newFile = new File(destFolder + "\\" + name);
 
-                String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new java.util.Date());
-                name = name.substring(0, name.lastIndexOf(".")) + "_" + timeStamp + "." + extension;
+                Files.move(oldFile.toPath(), newFile.toPath(), REPLACE_EXISTING);
 
-                FileUtils.moveFile(
-                        f,
-                        new File(destFolder + "\\" + name),
-                        StandardCopyOption.REPLACE_EXISTING);
-                System.out.println("Moved: " + name + " to: " + destFolder + "\\" + name);
+                System.out.println("Moved: " + name + " to: " + destFolder + name);
 
                 return true;
             }

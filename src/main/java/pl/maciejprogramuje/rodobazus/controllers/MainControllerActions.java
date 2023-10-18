@@ -1,8 +1,6 @@
 package pl.maciejprogramuje.rodobazus.controllers;
 
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.SpinnerValueFactory;
 import pl.maciejprogramuje.rodobazus.*;
 import pl.maciejprogramuje.rodobazus.models.FileRow;
@@ -13,11 +11,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainControllerActions {
-    private MainController mainController;
+    private final MainController mainController;
     private FolderReader folderReader;
     private int rowToAnaliseIndex;
     private ArrayList<String> lines;
-    private JarComparator jarComparator;
+    private FilesComparator fileComparator;
 
     public MainControllerActions(MainController mainController) {
         this.mainController = mainController;
@@ -156,14 +154,15 @@ public class MainControllerActions {
             protected Void call() {
                 mainController.setDisableButtonsProperty(true);
 
-                jarComparator = new JarComparator(
+                fileComparator = new FilesComparator(
+                        "BazusRodo",
                         mainController.getEnterBazusATextFieldProperty(),
                         mainController.getEnterBazusBTextFieldProperty(),
                         mainController.pathStringPropertyProperty()
                 );
-                //jarComparator.downloadRepos();
-                //jarComparator.extractRepos();
-                jarComparator.cleanFoldersFromExcludedFiles();
+                fileComparator.downloadBazusRepos();
+                fileComparator.extractRepos();
+                fileComparator.cleanFoldersFromExcludedFiles();
 
                 return null;
             }
@@ -181,12 +180,14 @@ public class MainControllerActions {
             protected Void call() {
                 mainController.setDisableButtonsProperty(true);
 
-                jarComparator = new JarComparator(
+                fileComparator = new FilesComparator(
+                        "WuRodo",
                         mainController.getEnterWuATextFieldProperty(),
                         mainController.getEnterWuBTextFieldProperty(),
                         mainController.pathStringPropertyProperty()
                 );
-                jarComparator.cleanFoldersFromExcludedFiles();
+                fileComparator.extractRepos();
+                fileComparator.cleanFoldersFromExcludedFiles();
 
                 return null;
             }
@@ -204,10 +205,8 @@ public class MainControllerActions {
                 "C:\\RodoTemp\\BazusRodo\\_temp\\B",
                 "C:\\RodoTemp\\BazusRodo\\A",
                 "C:\\RodoTemp\\BazusRodo\\B",
-                "C:\\RodoTemp\\BazusRodo\\Docs\\A",
-                "C:\\RodoTemp\\BazusRodo\\Docs\\B",
-                "C:\\RodoTemp\\BazusRodo\\Pics\\A",
-                "C:\\RodoTemp\\BazusRodo\\Pics\\B"
+                "C:\\RodoTemp\\BazusRodo\\Docs",
+                "C:\\RodoTemp\\BazusRodo\\Pics"
         );
     }
 
@@ -215,10 +214,44 @@ public class MainControllerActions {
         DeleteFilesUtility.deleteAllFilesInFolders(mainController,
                 "C:\\RodoTemp\\WuRodo\\A",
                 "C:\\RodoTemp\\WuRodo\\B",
-                "C:\\RodoTemp\\WuRodo\\Docs\\A",
-                "C:\\RodoTemp\\WuRodo\\Docs\\B",
-                "C:\\RodoTemp\\WuRodo\\Pics\\A",
-                "C:\\RodoTemp\\WuRodo\\Pics\\B"
+                "C:\\RodoTemp\\WuRodo\\Docs",
+                "C:\\RodoTemp\\WuRodo\\Pics"
         );
     }
+
+    public void handleCopyAWuButton() {
+        copyWu(mainController.getEnterWuATextFieldProperty(), "A");
+    }
+
+    public void handleCopyBWuButton() {
+        copyWu(mainController.getEnterWuBTextFieldProperty(), "B");
+    }
+
+    private void copyWu(String enterWuTextFieldProperty, String branch) {
+        final Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                mainController.setDisableButtonsProperty(true);
+                mainController.setPathStringProperty(
+                        "Trwa kopiowanie z " + enterWuTextFieldProperty + " do C:\\RodoTemp\\WuRodo\\" + branch);
+
+                CopyDirectoriesUtils.copyWuRepos(
+                        enterWuTextFieldProperty,
+                        branch
+                );
+
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            mainController.setDisableButtonsProperty(false);
+            mainController.setPathStringProperty("Kopiowanie " + branch + " ukończone");
+        });
+
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+
 }
