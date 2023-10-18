@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static pl.maciejprogramuje.rodobazus.Main.*;
 
-public class DeleteFilesUtility {
+public class CleanFoldersUtility {
     public static void cleanFolders(String rootPath, String app) throws IOException {
         File directory = new File(rootPath);
 
@@ -93,6 +93,42 @@ public class DeleteFilesUtility {
 
             Thread thread = new Thread(task);
             thread.start();
+        }
+    }
+
+    public static void distillateFiles(String rootPath, String app, String branch) throws IOException {
+        File directory = new File(rootPath);
+
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            for (final File f : files) {
+                if (f.isFile()) {
+                    String name = (f.getAbsolutePath().substring(12).replaceAll("\\\\", "_"));
+
+                    File newFile = new File("C:\\RodoTemp\\" + app + "\\" + branch + "\\" + name);
+
+                    System.out.println("Destylacja: " + f.getAbsolutePath() + " do: " + newFile.getAbsolutePath());
+
+                    Files.move(f.toPath(), newFile.toPath(), REPLACE_EXISTING);
+                } else if (f.isDirectory()) {
+                    distillateFiles(f.getAbsolutePath(), app, branch);
+                }
+            }
+        }
+    }
+
+    public static void deleteEmptyFolders(String rootPath) throws IOException {
+        File directory = new File(rootPath);
+
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            for (final File f : files) {
+                if (f.isDirectory()) {
+                    FileUtils.deleteDirectory(f);
+                }
+            }
         }
     }
 }

@@ -163,12 +163,17 @@ public class MainControllerActions {
                 fileComparator.downloadBazusRepos();
                 fileComparator.extractRepos();
                 fileComparator.cleanFoldersFromExcludedFiles();
+                fileComparator.removeFilesFromFolders();
+                fileComparator.deleteEmptyDirectories();
 
                 return null;
             }
         };
 
-        task.setOnSucceeded(event -> mainController.setDisableButtonsProperty(false));
+        task.setOnSucceeded(event -> {
+            mainController.setDisableButtonsProperty(false);
+            mainController.setPathStringProperty("Foldery gotowe do analizy!");
+        });
 
         Thread thread = new Thread(task);
         thread.start();
@@ -188,19 +193,24 @@ public class MainControllerActions {
                 );
                 fileComparator.extractRepos();
                 fileComparator.cleanFoldersFromExcludedFiles();
+                fileComparator.removeFilesFromFolders();
+                fileComparator.deleteEmptyDirectories();
 
                 return null;
             }
         };
 
-        task.setOnSucceeded(event -> mainController.setDisableButtonsProperty(false));
+        task.setOnSucceeded(event -> {
+            mainController.setDisableButtonsProperty(false);
+            mainController.setPathStringProperty("Foldery gotowe do analizy!");
+        });
 
         Thread thread = new Thread(task);
         thread.start();
     }
 
     public void handleDeleteBazusButton() {
-        DeleteFilesUtility.deleteAllFilesInFolders(mainController,
+        CleanFoldersUtility.deleteAllFilesInFolders(mainController,
                 "C:\\RodoTemp\\BazusRodo\\_temp\\A",
                 "C:\\RodoTemp\\BazusRodo\\_temp\\B",
                 "C:\\RodoTemp\\BazusRodo\\A",
@@ -211,7 +221,7 @@ public class MainControllerActions {
     }
 
     public void handleDeleteWuButton() {
-        DeleteFilesUtility.deleteAllFilesInFolders(mainController,
+        CleanFoldersUtility.deleteAllFilesInFolders(mainController,
                 "C:\\RodoTemp\\WuRodo\\A",
                 "C:\\RodoTemp\\WuRodo\\B",
                 "C:\\RodoTemp\\WuRodo\\Docs",

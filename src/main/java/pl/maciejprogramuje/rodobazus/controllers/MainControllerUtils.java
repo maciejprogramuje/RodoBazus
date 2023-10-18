@@ -7,17 +7,11 @@ import java.text.MessageFormat;
 
 public class MainControllerUtils {
     public static void showOnMessageLabel(final String message, final StringProperty stringProperty) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                stringProperty.setValue(message);
-            }
-        });
+        Platform.runLater(() -> stringProperty.setValue(message));
     }
 
     public static void showOnMessageLabelPattern(String string, StringProperty stringProperty, Object... arguments) {
-        String pattern = string;
-        String message = MessageFormat.format(pattern, arguments);
+        String message = MessageFormat.format(string, arguments);
         showOnMessageLabel(message, stringProperty);
     }
 }

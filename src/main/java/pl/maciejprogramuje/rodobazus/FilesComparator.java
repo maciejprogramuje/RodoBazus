@@ -86,7 +86,6 @@ public class FilesComparator {
         }
     }
 
-    //todo fileUrl
     private void extractToDirectories(String jar, String branch) {
         String fileName = jar.substring(jar.lastIndexOf("/") + 1);
 
@@ -98,11 +97,13 @@ public class FilesComparator {
             saveDir = "C:\\RodoTemp\\" + app + "\\" + branch + "\\";
         }
 
-        if (fileName.contains("-")) {
+        saveDir = saveDir + fileName.substring(0, fileName.indexOf(".jar"));
+
+        /*if (fileName.contains("-")) {
             saveDir = saveDir + fileName.substring(0, fileName.lastIndexOf("-"));
         } else {
             saveDir = saveDir + fileName.substring(0, fileName.indexOf(".jar"));
-        }
+        }*/
 
         ExtractorUtility.extractFile(fileUrl, saveDir);
     }
@@ -130,12 +131,36 @@ public class FilesComparator {
     public void cleanFoldersFromExcludedFiles() {
         try {
             pathProperty.setValue("Trwa czyszczenie " + app);
-            DeleteFilesUtility.cleanFolders("C:\\RodoTemp\\" + app + "\\A", app);
+            CleanFoldersUtility.cleanFolders("C:\\RodoTemp\\" + app + "\\A", app);
 
             pathProperty.setValue("Trwa czyszczenie " + app);
-            DeleteFilesUtility.cleanFolders("C:\\RodoTemp\\" + app + "\\B", app);
+            CleanFoldersUtility.cleanFolders("C:\\RodoTemp\\" + app + "\\B", app);
 
             pathProperty.setValue("Oczyszczanie folderow zakonczone");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeFilesFromFolders() {
+        try {
+            pathProperty.setValue("Trwa destylacja z folderow A " + app);
+            CleanFoldersUtility.distillateFiles("C:\\RodoTemp\\" + app + "\\A", app, "A");
+
+            pathProperty.setValue("Trwa destylacja z folderow B " + app);
+            CleanFoldersUtility.distillateFiles("C:\\RodoTemp\\" + app + "\\B", app, "B");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteEmptyDirectories() {
+        try {
+            pathProperty.setValue("Usuwanie pustych folderów z A " + app);
+            CleanFoldersUtility.deleteEmptyFolders("C:\\RodoTemp\\" + app + "\\A");
+
+            pathProperty.setValue("Usuwanie pustych folderów z A " + app);
+            CleanFoldersUtility.deleteEmptyFolders("C:\\RodoTemp\\" + app + "\\B");
         } catch (IOException e) {
             e.printStackTrace();
         }
