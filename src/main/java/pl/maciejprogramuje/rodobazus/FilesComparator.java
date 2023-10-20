@@ -97,13 +97,15 @@ public class FilesComparator {
             saveDir = "C:\\RodoTemp\\" + app + "\\" + branch + "\\";
         }
 
-        saveDir = saveDir + fileName.substring(0, fileName.indexOf(".jar"));
 
-        /*if (fileName.contains("-")) {
-            saveDir = saveDir + fileName.substring(0, fileName.lastIndexOf("-"));
+        //todo
+        //saveDir = saveDir + fileName.substring(0, fileName.indexOf(".jar"));
+
+        if (fileName.contains("-")) {
+            saveDir = saveDir + fileName.substring(0, fileName.lastIndexOf("-") - 1);
         } else {
             saveDir = saveDir + fileName.substring(0, fileName.indexOf(".jar"));
-        }*/
+        }
 
         ExtractorUtility.extractFile(fileUrl, saveDir);
     }
@@ -159,7 +161,7 @@ public class FilesComparator {
             pathProperty.setValue("Usuwanie pustych folderów z A " + app);
             CleanFoldersUtility.deleteEmptyFolders("C:\\RodoTemp\\" + app + "\\A");
 
-            pathProperty.setValue("Usuwanie pustych folderów z A " + app);
+            pathProperty.setValue("Usuwanie pustych folderów z B " + app);
             CleanFoldersUtility.deleteEmptyFolders("C:\\RodoTemp\\" + app + "\\B");
         } catch (IOException e) {
             e.printStackTrace();
