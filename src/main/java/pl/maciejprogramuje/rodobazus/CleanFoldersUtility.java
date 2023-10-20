@@ -104,7 +104,9 @@ public class CleanFoldersUtility {
         if (files != null) {
             for (final File f : files) {
                 if (f.isFile()) {
-                    String name = (f.getAbsolutePath().substring(12).replaceAll("\\\\", "_"));
+                    String name = f.getAbsolutePath()
+                            .replaceAll("\\\\", "_");
+                    name = name.substring(name.indexOf("_" + branch + "_") + 3);
 
                     File newFile = new File("C:\\RodoTemp\\" + app + "\\" + branch + "\\" + name);
 
